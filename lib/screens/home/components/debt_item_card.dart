@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hackcom_2021/models/debt_item.dart';
 import 'package:hackcom_2021/theme/size_config.dart';
+import 'package:hackcom_2021/utils/number_shortener.dart';
 
 class DebtItemCard extends StatelessWidget {
-  const DebtItemCard({Key? key}) : super(key: key);
+  final DebtItem debtItem;
+  const DebtItemCard({Key? key, required this.debtItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class DebtItemCard extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      'High school First-Year Loan',
+                      debtItem.title,
                       style: GoogleFonts.montserrat(
                         color: Color(0xFF00FFE0),
                         fontSize: sText * 4,
@@ -35,6 +40,9 @@ class DebtItemCard extends StatelessWidget {
                       overflow: TextOverflow.fade,
                     ),
                   ),
+                  IconButton(
+                      onPressed: () => _deleteDialog(debtItem.id),
+                      icon: Icon(Icons.delete, color: Colors.white))
                 ],
               ),
               SizedBox(height: sx * 3.2),
@@ -43,25 +51,72 @@ class DebtItemCard extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: sy * 50,
-                  childAspectRatio: 4,
+                  childAspectRatio: 2,
                 ),
                 children: [
-                  Text('Interest: 15%',
+                  Text('Interest: ${debtItem.interestRate}%',
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500)),
-                  Text('Installment: \$20000',
+                  Text(
+                      'Number of installments: ${numberShortener(debtItem.numberOfInstallments.round())} ',
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500)),
-                  Text('Principal: \$200000',
+                  Text(
+                      'Principal: \$${numberShortener(debtItem.principal.round())}',
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500)),
-                  Text('Payment: \$2000',
+                  Text(
+                      'Time Period: ${numberShortener(debtItem.timePeriod.round())} months',
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500)),
                 ],
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Future _deleteDialog(String id) async {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+    await Get.dialog(
+      Form(
+        key: _formKey,
+        child: AlertDialog(
+          title: Text(
+              'Are you sure you want to delete this item?\nThis action can not be reversed.'),
+          actions: [
+            TextButton.icon(
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection('debtItems')
+                    .doc(id)
+                    .delete();
+                Get.back();
+              },
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.red,
+              ),
+              label: Text(
+                'Yes',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: Get.back,
+              icon: Icon(
+                Icons.cancel,
+                color: Colors.green,
+              ),
+              label: Text(
+                'No',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+          ],
         ),
       ),
     );
