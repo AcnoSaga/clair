@@ -1,6 +1,5 @@
-package com.example.hackcom_2021
+package com.clair.app
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
-}
+class MainActivity : FlutterActivity() {}

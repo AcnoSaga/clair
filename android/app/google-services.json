@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "433987767145",
+    "project_id": "hackcom-cmsgn1",
+    "storage_bucket": "hackcom-cmsgn1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433987767145:android:23f94e9f2ead8d091b4bf8",
+        "android_client_info": {
+          "package_name": "com.clair.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433987767145-b814mrsi12d0mlejdq5ev5rdbm3l8n11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGuYAMngmfRtWz7PKd8pv-6seu6MnO1g8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433987767145-b814mrsi12d0mlejdq5ev5rdbm3l8n11.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "433987767145-oos22frgn1p9o9hq83g30mlkubo16bdi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.clair.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
