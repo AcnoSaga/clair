@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
             ),
             Gap(height: 8),
             Text(
-              'clair it out.',
+              'clair it out',
               style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontSize: sText * 10,

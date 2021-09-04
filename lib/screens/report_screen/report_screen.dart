@@ -63,13 +63,12 @@ class _ReportScreenState extends State<ReportScreen> {
             final sum = snapshot.data!.docs
                 .map((doc) => DebtItem.fromMap(doc.data(), doc.id))
                 .fold<double>(0, (previousValue, debtItem) {
-              return previousValue +
-                  (debtItem.principal *
-                      pow(
-                          1 +
-                              ((debtItem.interestRate / 100) /
-                                  debtItem.timePeriod),
-                          debtItem.numberOfInstallments));
+              final amount = (debtItem.principal *
+                  pow(1 + ((debtItem.interestRate / 100) / debtItem.timePeriod),
+                      debtItem.numberOfInstallments / debtItem.timePeriod));
+              final weeklyAmount = amount /
+                  (debtItem.numberOfInstallments * debtItem.timePeriod * 4);
+              return previousValue + weeklyAmount;
             });
             return Center(
               child: Column(
@@ -82,7 +81,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   ),
                   Gap(height: 2),
                   Text(
-                    numberShortener(sum.floor()),
+                    '\$' + numberShortener(sum.floor()),
                     style: GoogleFonts.montserrat(
                         color: Colors.white, fontSize: sText * 25),
                     textAlign: TextAlign.center,
