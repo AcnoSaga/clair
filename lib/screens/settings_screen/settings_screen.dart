@@ -49,7 +49,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: (BuildContext context) {
                     showAboutDialog(
                       context: context,
-                      // applicationIcon: Icon(Icons.ac_unit),
                       useRootNavigator: false,
                       applicationLegalese: 'All Rights Reserved. Clair Inc.',
                     );

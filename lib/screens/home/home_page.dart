@@ -7,6 +7,7 @@ import 'package:hackcom_2021/gap.dart';
 import 'package:hackcom_2021/models/debt_item.dart';
 import 'package:hackcom_2021/screens/report_screen/report_screen.dart';
 import 'package:hackcom_2021/screens/settings_screen/settings_screen.dart';
+import 'package:hackcom_2021/screens/upi_screen/upi_screen.dart';
 import 'package:hackcom_2021/theme/size_config.dart';
 import 'package:hackcom_2021/utils/validators/text_validators.dart';
 
@@ -83,8 +84,28 @@ class HomePage extends StatelessWidget {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 final doc = snapshot.data!.docs[index];
-                return DebtItemCard(
-                  debtItem: DebtItem.fromMap(doc.data(), doc.id),
+                return GestureDetector(
+                  onTap: () => Get.to(() => UpiScreen(
+                        onSuccess: () async {
+                          if (!(doc["installment"] < 1)) {
+                            if (doc["installment"] == 1) {
+                              return await FirebaseFirestore.instance
+                                  .collection('debtItems')
+                                  .doc(doc.id)
+                                  .delete();
+                            }
+                            await FirebaseFirestore.instance
+                                .collection('debtItems')
+                                .doc(doc.id)
+                                .update({
+                              "installment": FieldValue.increment(-1),
+                            });
+                          }
+                        },
+                      )),
+                  child: DebtItemCard(
+                    debtItem: DebtItem.fromMap(doc.data(), doc.id),
+                  ),
                 );
               },
             );
